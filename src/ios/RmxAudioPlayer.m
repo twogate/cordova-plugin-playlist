@@ -32,6 +32,7 @@ static char kPlayerItemTimeRangesContext;
 @property (nonatomic) BOOL isAtBeginning;
 @property (nonatomic) BOOL isPlaying;
 @property (nonatomic) float queuePosition;
+@property () BOOL isContinousPlay;
 @end
 
 @implementation RmxAudioPlayer
@@ -460,6 +461,15 @@ static char kPlayerItemTimeRangesContext;
 
     CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
     [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
+}
+
+- (void) changeContinousMode:(CDVInvokedUrlCommand*)command {
+  NSLog(@"RmxAudioPlayer.execute=changeContinousMode");
+  NSNumber* argVal = [command argumentAtIndex:0];
+  self.isContinousPlay = argVal.boolValue;
+
+  CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+  [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
 }
 
 
@@ -1315,7 +1325,9 @@ static char kPlayerItemTimeRangesContext;
         NSArray* queue = @[];
 
         _avQueuePlayer = [[AVBidirectionalQueuePlayer alloc] initWithItems:queue];
-        _avQueuePlayer.actionAtItemEnd = AVPlayerActionAtItemEndPause;
+        if (!self.isContinousPlay) {
+          _avQueuePlayer.actionAtItemEnd = AVPlayerActionAtItemEndPause;
+        }
         [_avQueuePlayer addObserver:self forKeyPath:@"currentItem" options:NSKeyValueObservingOptionNew context:&kAvQueuePlayerContext];
         [_avQueuePlayer addObserver:self forKeyPath:@"rate" options:NSKeyValueObservingOptionNew context:&kAvQueuePlayerRateContext];
 

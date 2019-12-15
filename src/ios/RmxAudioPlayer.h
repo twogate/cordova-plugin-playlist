@@ -58,6 +58,7 @@
 - (void) getPlaybackPosition:(CDVInvokedUrlCommand *) command;
 - (void) getCurrentBuffer:(CDVInvokedUrlCommand *) command;
 - (void) getQueuePosition:(CDVInvokedUrlCommand *) command;
+- (void) changeContinousMode:(CDVInvokedUrlCommand *) command;
 
 // Cleanup
 - (void)release:(CDVInvokedUrlCommand *)command;
