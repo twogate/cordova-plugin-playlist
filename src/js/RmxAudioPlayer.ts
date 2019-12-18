@@ -375,6 +375,9 @@ export class RmxAudioPlayer {
     exec(successCallback, errorCallback, 'RmxAudioPlayer', 'getQueuePosition', []);
   }
 
+  changeContinousMode = (successCallback: SuccessCallback, errorCallback: ErrorCallback, isContinous: boolean) => {
+    exec(successCallback, errorCallback, "RmxAudioPlayer", "changeContinousMode", [isContinous]);
+  }
 
   /**
    * Status event handling

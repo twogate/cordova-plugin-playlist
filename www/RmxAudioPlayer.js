@@ -14,7 +14,7 @@ var _Constants = require("./Constants");
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -24,7 +24,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-var exec = typeof cordova !== 'undefined' ? cordova.require('cordova/exec') : null; // const channel = typeof cordova !== 'undefined' ? cordova.require('cordova/channel') : null;
+var exec = typeof cordova !== "undefined" ? cordova.require("cordova/exec") : null; // const channel = typeof cordova !== 'undefined' ? cordova.require('cordova/channel') : null;
 
 var log = console;
 var itemStatusChangeTypes = [_Constants.RmxAudioStatusMessage.RMXSTATUS_PLAYBACK_POSITION, _Constants.RmxAudioStatusMessage.RMXSTATUS_DURATION, _Constants.RmxAudioStatusMessage.RMXSTATUS_BUFFERING, _Constants.RmxAudioStatusMessage.RMXSTATUS_CANPLAY, _Constants.RmxAudioStatusMessage.RMXSTATUS_LOADING, _Constants.RmxAudioStatusMessage.RMXSTATUS_LOADED, _Constants.RmxAudioStatusMessage.RMXSTATUS_PAUSE, _Constants.RmxAudioStatusMessage.RMXSTATUS_COMPLETED, _Constants.RmxAudioStatusMessage.RMXSTATUS_ERROR];
@@ -70,7 +70,7 @@ function () {
   }, {
     key: "isPlaying",
     get: function get() {
-      return this._currentState === 'playing';
+      return this._currentState === "playing";
     }
     /**
      * True if the playlist is currently paused
@@ -79,7 +79,7 @@ function () {
   }, {
     key: "isPaused",
     get: function get() {
-      return this._currentState === 'paused' || this._currentState === 'stopped';
+      return this._currentState === "paused" || this._currentState === "stopped";
     }
     /**
      * True if the plugin is currently loading its *current* track.
@@ -94,7 +94,7 @@ function () {
   }, {
     key: "isLoading",
     get: function get() {
-      return this._currentState === 'loading';
+      return this._currentState === "loading";
     }
     /**
      * True if the *currently playing track* has been loaded and can be played (this includes if it is *currently playing*).
@@ -142,7 +142,7 @@ function () {
 
     _defineProperty(this, "_readyReject", void 0);
 
-    _defineProperty(this, "_currentState", 'unknown');
+    _defineProperty(this, "_currentState", "unknown");
 
     _defineProperty(this, "_hasError", false);
 
@@ -164,16 +164,16 @@ function () {
 
         _this._readyResolve(true);
 
-        if (msg.action === 'status') {
+        if (msg.action === "status") {
           _this.onStatus(msg.status.trackId, msg.status.msgType, msg.status.value);
         } else {
-          console.warn('Unknown audio player onStatus message:', msg.action);
+          console.warn("Unknown audio player onStatus message:", msg.action);
         }
       }; // channel.onCordovaReady.subscribe(() => {
 
 
       var error = function error(args) {
-        var message = 'CORDOVA RMXAUDIOPLAYER: Error storing message channel:';
+        var message = "CORDOVA RMXAUDIOPLAYER: Error storing message channel:";
         console.warn(message, args);
 
         _this._readyReject({
@@ -182,7 +182,7 @@ function () {
         });
       };
 
-      exec(onNativeStatus, error, 'RmxAudioPlayer', 'initialize', []); // channel.initializationComplete('onRmxAudioPlayerReady');
+      exec(onNativeStatus, error, "RmxAudioPlayer", "initialize", []); // channel.initializationComplete('onRmxAudioPlayerReady');
       // });
 
       return _this._initPromise;
@@ -190,121 +190,121 @@ function () {
 
     _defineProperty(this, "setOptions", function (successCallback, errorCallback, options) {
       _this.options = _objectSpread({}, _this.options, {}, options);
-      exec(successCallback, errorCallback, 'RmxAudioPlayer', 'setOptions', [options]);
+      exec(successCallback, errorCallback, "RmxAudioPlayer", "setOptions", [options]);
     });
 
     _defineProperty(this, "setPlaylistItems", function (successCallback, errorCallback, items, options) {
-      exec(successCallback, errorCallback, 'RmxAudioPlayer', 'setPlaylistItems', [_this.validateTracks(items), options || {}]);
+      exec(successCallback, errorCallback, "RmxAudioPlayer", "setPlaylistItems", [_this.validateTracks(items), options || {}]);
     });
 
     _defineProperty(this, "addItem", function (successCallback, errorCallback, trackItem) {
       var validTrackItem = _this.validateTrack(trackItem);
 
       if (!validTrackItem) {
-        return errorCallback(new Error('Provided track is null or not an audio track'));
+        return errorCallback(new Error("Provided track is null or not an audio track"));
       }
 
-      exec(successCallback, errorCallback, 'RmxAudioPlayer', 'addItem', [validTrackItem]);
+      exec(successCallback, errorCallback, "RmxAudioPlayer", "addItem", [validTrackItem]);
     });
 
     _defineProperty(this, "addAllItems", function (successCallback, errorCallback, items) {
-      exec(successCallback, errorCallback, 'RmxAudioPlayer', 'addAllItems', [_this.validateTracks(items)]);
+      exec(successCallback, errorCallback, "RmxAudioPlayer", "addAllItems", [_this.validateTracks(items)]);
     });
 
     _defineProperty(this, "removeItem", function (successCallback, errorCallback, removeItem) {
       if (!removeItem) {
-        return errorCallback(new Error('Track removal spec is empty'));
+        return errorCallback(new Error("Track removal spec is empty"));
       }
 
       if (!removeItem.trackId && !removeItem.trackIndex) {
-        return errorCallback(new Error('Track removal spec is invalid'));
+        return errorCallback(new Error("Track removal spec is invalid"));
       }
 
-      exec(successCallback, errorCallback, 'RmxAudioPlayer', 'removeItem', [removeItem.trackIndex, removeItem.trackId]);
+      exec(successCallback, errorCallback, "RmxAudioPlayer", "removeItem", [removeItem.trackIndex, removeItem.trackId]);
     });
 
     _defineProperty(this, "removeItems", function (successCallback, errorCallback, items) {
-      exec(successCallback, errorCallback, 'RmxAudioPlayer', 'removeItems', [items]);
+      exec(successCallback, errorCallback, "RmxAudioPlayer", "removeItems", [items]);
     });
 
     _defineProperty(this, "clearAllItems", function (successCallback, errorCallback) {
-      exec(successCallback, errorCallback, 'RmxAudioPlayer', 'clearAllItems', []);
+      exec(successCallback, errorCallback, "RmxAudioPlayer", "clearAllItems", []);
     });
 
     _defineProperty(this, "play", function (successCallback, errorCallback) {
-      exec(successCallback, errorCallback, 'RmxAudioPlayer', 'play', []);
+      exec(successCallback, errorCallback, "RmxAudioPlayer", "play", []);
     });
 
     _defineProperty(this, "playTrackByIndex", function (successCallback, errorCallback, index, position) {
-      exec(successCallback, errorCallback, 'RmxAudioPlayer', 'playTrackByIndex', [index, position || 0]);
+      exec(successCallback, errorCallback, "RmxAudioPlayer", "playTrackByIndex", [index, position || 0]);
     });
 
     _defineProperty(this, "playTrackById", function (successCallback, errorCallback, trackId, position) {
-      exec(successCallback, errorCallback, 'RmxAudioPlayer', 'playTrackById', [trackId, position || 0]);
+      exec(successCallback, errorCallback, "RmxAudioPlayer", "playTrackById", [trackId, position || 0]);
     });
 
     _defineProperty(this, "pause", function (successCallback, errorCallback) {
-      exec(successCallback, errorCallback, 'RmxAudioPlayer', 'pause', []);
+      exec(successCallback, errorCallback, "RmxAudioPlayer", "pause", []);
     });
 
     _defineProperty(this, "skipForward", function (successCallback, errorCallback) {
-      exec(successCallback, errorCallback, 'RmxAudioPlayer', 'skipForward', []);
+      exec(successCallback, errorCallback, "RmxAudioPlayer", "skipForward", []);
     });
 
     _defineProperty(this, "skipBack", function (successCallback, errorCallback) {
-      exec(successCallback, errorCallback, 'RmxAudioPlayer', 'skipBack', []);
+      exec(successCallback, errorCallback, "RmxAudioPlayer", "skipBack", []);
     });
 
     _defineProperty(this, "seekTo", function (successCallback, errorCallback, position) {
-      exec(successCallback, errorCallback, 'RmxAudioPlayer', 'seekTo', [position]);
+      exec(successCallback, errorCallback, "RmxAudioPlayer", "seekTo", [position]);
     });
 
     _defineProperty(this, "seekToQueuePosition", function (successCallback, errorCallback, position) {
-      exec(successCallback, errorCallback, 'RmxAudioPlayer', 'seekToQueuePosition', [position]);
+      exec(successCallback, errorCallback, "RmxAudioPlayer", "seekToQueuePosition", [position]);
     });
 
     _defineProperty(this, "setPlaybackRate", function (successCallback, errorCallback, rate) {
-      exec(successCallback, errorCallback, 'RmxAudioPlayer', 'setPlaybackRate', [rate]);
+      exec(successCallback, errorCallback, "RmxAudioPlayer", "setPlaybackRate", [rate]);
     });
 
     _defineProperty(this, "setVolume", function (successCallback, errorCallback, volume) {
-      exec(successCallback, errorCallback, 'RmxAudioPlayer', 'setPlaybackVolume', [volume]);
+      exec(successCallback, errorCallback, "RmxAudioPlayer", "setPlaybackVolume", [volume]);
     });
 
     _defineProperty(this, "setLoop", function (successCallback, errorCallback, loop) {
-      exec(successCallback, errorCallback, 'RmxAudioPlayer', 'setLoopAll', [!!loop]);
+      exec(successCallback, errorCallback, "RmxAudioPlayer", "setLoopAll", [!!loop]);
     });
 
     _defineProperty(this, "setOutputAudioPortToSpeaker", function (successCallback, errorCallback) {
-      exec(successCallback, errorCallback, 'RmxAudioPlayer', 'setOutputAudioPortToSpeaker');
+      exec(successCallback, errorCallback, "RmxAudioPlayer", "setOutputAudioPortToSpeaker");
     });
 
     _defineProperty(this, "setOutputAudioPortToReceiver", function (successCallback, errorCallback) {
-      exec(successCallback, errorCallback, 'RmxAudioPlayer', 'setOutputAudioPortToReceiver');
+      exec(successCallback, errorCallback, "RmxAudioPlayer", "setOutputAudioPortToReceiver");
     });
 
     _defineProperty(this, "getPlaybackRate", function (successCallback, errorCallback) {
-      exec(successCallback, errorCallback, 'RmxAudioPlayer', 'getPlaybackRate', []);
+      exec(successCallback, errorCallback, "RmxAudioPlayer", "getPlaybackRate", []);
     });
 
     _defineProperty(this, "getVolume", function (successCallback, errorCallback) {
-      exec(successCallback, errorCallback, 'RmxAudioPlayer', 'getPlaybackVolume', []);
+      exec(successCallback, errorCallback, "RmxAudioPlayer", "getPlaybackVolume", []);
     });
 
     _defineProperty(this, "getPosition", function (successCallback, errorCallback) {
-      exec(successCallback, errorCallback, 'RmxAudioPlayer', 'getPlaybackPosition', []);
+      exec(successCallback, errorCallback, "RmxAudioPlayer", "getPlaybackPosition", []);
     });
 
     _defineProperty(this, "getCurrentBuffer", function (successCallback, errorCallback) {
-      exec(successCallback, errorCallback, 'RmxAudioPlayer', 'getCurrentBuffer', []);
-    });
-
-    _defineProperty(this, "getTotalDuration", function (successCallback, errorCallback) {
-      exec(successCallback, errorCallback, 'RmxAudioPlayer', 'getTotalDuration', []);
+      exec(successCallback, errorCallback, "RmxAudioPlayer", "getCurrentBuffer", []);
     });
 
     _defineProperty(this, "getQueuePosition", function (successCallback, errorCallback) {
-      exec(successCallback, errorCallback, 'RmxAudioPlayer', 'getQueuePosition', []);
+      exec(successCallback, errorCallback, "RmxAudioPlayer", "getQueuePosition", []);
+    });
+
+    _defineProperty(this, "changeContinousMode", function (successCallback, errorCallback, isContinous) {
+      exec(successCallback, errorCallback, "RmxAudioPlayer", "changeContinousMode", [isContinous]);
     });
 
     _defineProperty(this, "validateTracks", function (items) {
@@ -369,7 +369,7 @@ function () {
       if (status.type === _Constants.RmxAudioStatusMessage.RMXSTATUS_TRACK_CHANGED) {
         this._hasError = false;
         this._hasLoaded = false;
-        this._currentState = 'loading';
+        this._currentState = "loading";
         this._currentItem = status.value.currentItem;
       } // The plugin's status changes only in response to specific events.
 
@@ -391,7 +391,7 @@ function () {
         }
       }
 
-      this.emit('status', status);
+      this.emit("status", status);
     }
     /**
      * Subscribe to events raised by the plugin, e.g. on('status', (data) => { ... }),
@@ -452,7 +452,7 @@ function () {
       for (var i = 0; i < handler.length; i++) {
         var _callback = this.handlers[eventName][i];
 
-        if (typeof _callback === 'function') {
+        if (typeof _callback === "function") {
           _callback.apply(void 0, args);
         }
       }
@@ -476,22 +476,22 @@ function () {
       // Doesn't need to be perfect or secure, just good enough to give each item an ID.
       var d = new Date().getTime();
 
-      if (typeof performance !== 'undefined' && typeof performance.now === 'function') {
+      if (typeof performance !== "undefined" && typeof performance.now === "function") {
         d += performance.now(); //use high-precision timer if available
       } // There are better ways to do this in ES6, we are intentionally avoiding the import
       // of an ES6 polyfill here.
 
 
-      var template = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx';
+      var template = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx";
       return [].slice.call(template).map(function (c) {
-        if (c === '-' || c === '4') {
+        if (c === "-" || c === "4") {
           return c;
         }
 
         var r = (d + Math.random() * 16) % 16 | 0;
         d = Math.floor(d / 16);
-        return (c === 'x' ? r : r & 0x3 | 0x8).toString(16);
-      }).join('');
+        return (c === "x" ? r : r & 0x3 | 0x8).toString(16);
+      }).join("");
     }
   }]);
 

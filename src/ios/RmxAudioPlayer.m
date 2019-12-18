@@ -32,7 +32,7 @@ static char kPlayerItemTimeRangesContext;
 @property (nonatomic) BOOL isAtBeginning;
 @property (nonatomic) BOOL isPlaying;
 @property (nonatomic) float queuePosition;
-@property () BOOL isContinousPlay;
+@property (nonatomic) BOOL isContinousPlay;
 @end
 
 @implementation RmxAudioPlayer
@@ -464,12 +464,13 @@ static char kPlayerItemTimeRangesContext;
 }
 
 - (void) changeContinousMode:(CDVInvokedUrlCommand*)command {
-  NSLog(@"RmxAudioPlayer.execute=changeContinousMode");
-  NSNumber* argVal = [command argumentAtIndex:0];
-  self.isContinousPlay = argVal.boolValue;
+    NSLog(@"RmxAudioPlayer.execute=changeContinousMode");
+    NSNumber* argVal = [command argumentAtIndex:0];
+    printf(argVal.boolValue);
+    self.isContinousPlay = argVal.boolValue;
 
-  CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
-  [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
+    CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
 }
 
 
@@ -670,6 +671,15 @@ static char kPlayerItemTimeRangesContext;
 {
     _volume = volume;
     [self avQueuePlayer].volume = volume;
+}
+
+- (void) setIsContinousPlay:(BOOL)isContinousPlay
+{
+    if (isContinousPlay) {
+        _avQueuePlayer.actionAtItemEnd = AVPlayerActionAtItemEndNone;
+    } else {
+        _avQueuePlayer.actionAtItemEnd = AVPlayerActionAtItemEndPause;
+    }
 }
 
 - (void) addTracks:(NSMutableArray<AudioTrack*>*)tracks
@@ -1325,9 +1335,7 @@ static char kPlayerItemTimeRangesContext;
         NSArray* queue = @[];
 
         _avQueuePlayer = [[AVBidirectionalQueuePlayer alloc] initWithItems:queue];
-        if (!self.isContinousPlay) {
-          _avQueuePlayer.actionAtItemEnd = AVPlayerActionAtItemEndPause;
-        }
+        _avQueuePlayer.actionAtItemEnd = AVPlayerActionAtItemEndPause;
         [_avQueuePlayer addObserver:self forKeyPath:@"currentItem" options:NSKeyValueObservingOptionNew context:&kAvQueuePlayerContext];
         [_avQueuePlayer addObserver:self forKeyPath:@"rate" options:NSKeyValueObservingOptionNew context:&kAvQueuePlayerRateContext];
 
