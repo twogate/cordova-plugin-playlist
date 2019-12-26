@@ -351,6 +351,11 @@ public class AudioPlayerPlugin extends CordovaPlugin implements RmxConstants, On
       return true;
     }
 
+    if (CHANGE_CONTINOUS_MODE.equals(action)) {
+      boolean isContinous = (boolean) args.getBoolean(0);
+
+    }
+
     return false;
   }
 

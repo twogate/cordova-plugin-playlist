@@ -39,6 +39,7 @@ public class PlaylistManager extends ListPlaylistManager<AudioTrack> implements 
     private boolean shouldStopPlaylist = false;
     private boolean previousInvoked = false;
     private boolean nextInvoked = false;
+    private boolean isContinous = false;
     private AudioTrack currentErrorTrack;
 
     // Really need a way to propagate the settings through the app
@@ -374,6 +375,12 @@ public class PlaylistManager extends ListPlaylistManager<AudioTrack> implements 
       } catch (Exception e) {
           Log.w(TAG, "beginPlayback: Error setting volume or playback speed: " + e.getMessage());
       }
+    }
+
+    public void changeContinousMode(boolean isContinous) {
+        this.isContinous = isContinous;
+
+        // TODO HandlerのisContinousにこの値を渡す
     }
 
     // If we wanted to implement a *native* player (like cordova-plugin-exoplayer),

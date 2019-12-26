@@ -28,6 +28,7 @@ public class AudioPlaylistHandler<I extends PlaylistItem, M extends BasePlaylist
 
     private static final String TAG = "AudioPlaylistHandler";
     private boolean didSeekCatchup = false;
+    public boolean isContinous = false;
 
     AudioPlaylistHandler(
             Context context,
@@ -102,7 +103,7 @@ public class AudioPlaylistHandler<I extends PlaylistItem, M extends BasePlaylist
         // This is called when a single item completes playback.
         // For now, the superclass does the right thing, but we may need to override.]
         //super.onCompletion(mediaPlayer);
-        setStartPaused(true);
+        setStartPaused(!isContinous);
         next();
     }
 
