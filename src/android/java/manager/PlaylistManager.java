@@ -20,6 +20,7 @@ import com.rolamix.plugins.audioplayer.PlaylistItemOptions;
 import com.rolamix.plugins.audioplayer.TrackRemovalItem;
 import com.rolamix.plugins.audioplayer.data.AudioTrack;
 import com.rolamix.plugins.audioplayer.playlist.AudioApi;
+import com.rolamix.plugins.audioplayer.playlist.AudioPlaylistHandler;
 import com.rolamix.plugins.audioplayer.service.MediaService;
 
 /**
@@ -39,7 +40,7 @@ public class PlaylistManager extends ListPlaylistManager<AudioTrack> implements 
     private boolean shouldStopPlaylist = false;
     private boolean previousInvoked = false;
     private boolean nextInvoked = false;
-    private boolean isContinous = false;
+    public boolean isContinous = false;
     private AudioTrack currentErrorTrack;
 
     // Really need a way to propagate the settings through the app
@@ -378,9 +379,8 @@ public class PlaylistManager extends ListPlaylistManager<AudioTrack> implements 
     }
 
     public void changeContinousMode(boolean isContinous) {
-        this.isContinous = isContinous;
-
-        // TODO HandlerのisContinousにこの値を渡す
+        Log.i("PlaylistManager", "change isContinous = " + AudioPlaylistHandler.isContinous);
+        AudioPlaylistHandler.isContinous = isContinous;
     }
 
     // If we wanted to implement a *native* player (like cordova-plugin-exoplayer),

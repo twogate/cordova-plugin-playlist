@@ -70,7 +70,7 @@ public class MediaService extends BasePlaylistService<AudioTrack, PlaylistManage
             }
         };
 
-        PlaylistHandler<AudioTrack> handler = new AudioPlaylistHandler.Builder<>(
+        return new AudioPlaylistHandler.Builder<>(
                 getApplicationContext(),
                 getClass(),
                 getPlaylistManager(),
