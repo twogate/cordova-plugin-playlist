@@ -103,9 +103,12 @@ public class AudioPlaylistHandler<I extends PlaylistItem, M extends BasePlaylist
         Log.i("continous", "" + AudioPlaylistHandler.isContinous);
         // This is called when a single item completes playback.
         // For now, the superclass does the right thing, but we may need to override.]
-        super.onCompletion(mediaPlayer);
-        // setStartPaused(!AudioPlaylistHandler.isContinous);
+        if (AudioPlaylistHandler.isContinous) {
+            super.onCompletion(mediaPlayer);
+        } else {
+            setStartPaused(true);
         next();
+        }
     }
 
 
