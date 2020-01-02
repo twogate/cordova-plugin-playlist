@@ -1,7 +1,7 @@
 package com.rolamix.plugins.audioplayer.service;
 
-import __PACKAGE_NAME__.MainApplication;
-import android.support.annotation.NonNull;
+import jp.co.hakuhodody_media.mimitab.MainApplication;
+import androidx.annotation.NonNull;
 import android.util.Log;
 
 import com.devbrackets.android.playlistcore.api.MediaPlayerApi;
@@ -19,63 +19,60 @@ import com.rolamix.plugins.audioplayer.playlist.AudioPlaylistHandler;
  */
 public class MediaService extends BasePlaylistService<AudioTrack, PlaylistManager> {
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        // Adds the audio player implementation, otherwise there's nothing to play media with
-        AudioApi newAudio = new AudioApi(getApplicationContext());
-        newAudio.addErrorListener(getPlaylistManager());
-        getPlaylistManager().getMediaPlayers().add(newAudio);
-        getPlaylistManager().onMediaServiceInit(true);
+  @Override
+  public void onCreate() {
+    super.onCreate();
+    // Adds the audio player implementation, otherwise there's nothing to play media
+    // with
+    AudioApi newAudio = new AudioApi(getApplicationContext());
+    newAudio.addErrorListener(getPlaylistManager());
+    getPlaylistManager().getMediaPlayers().add(newAudio);
+    getPlaylistManager().onMediaServiceInit(true);
+  }
+
+  @Override
+  public void onDestroy() {
+    super.onDestroy();
+
+    // Releases and clears all the MediaPlayersMediaImageProvider
+    for (MediaPlayerApi<AudioTrack> player : getPlaylistManager().getMediaPlayers()) {
+      player.release();
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
+    getPlaylistManager().getMediaPlayers().clear();
+  }
 
-        // Releases and clears all the MediaPlayersMediaImageProvider
-        for (MediaPlayerApi<AudioTrack> player : getPlaylistManager().getMediaPlayers()) {
-            player.release();
-        }
+  @NonNull
+  @Override
+  protected PlaylistManager getPlaylistManager() {
+    return ((MainApplication) getApplicationContext()).getPlaylistManager();
+  }
 
-        getPlaylistManager().getMediaPlayers().clear();
-    }
-
-    @NonNull
-    @Override
-    protected PlaylistManager getPlaylistManager() {
-        return ((MainApplication)getApplicationContext()).getPlaylistManager();
-    }
-
-    @NonNull
-    @Override
-    public PlaylistHandler<AudioTrack> newPlaylistHandler() {
-        MediaImageProvider imageProvider = new MediaImageProvider(getApplicationContext(), new MediaImageProvider.OnImageUpdatedListener() {
-            @Override
-            public void onImageUpdated() {
-                getPlaylistHandler().updateMediaControls();
-            }
+  @NonNull
+  @Override
+  public PlaylistHandler<AudioTrack> newPlaylistHandler() {
+    MediaImageProvider imageProvider = new MediaImageProvider(getApplicationContext(),
+        new MediaImageProvider.OnImageUpdatedListener() {
+          @Override
+          public void onImageUpdated() {
+            getPlaylistHandler().updateMediaControls();
+          }
         });
 
-        AudioPlaylistHandler.Listener<AudioTrack> listener = new AudioPlaylistHandler.Listener<AudioTrack>() {
-            @Override
-            public void onMediaPlayerChanged(MediaPlayerApi<AudioTrack> oldPlayer, MediaPlayerApi<AudioTrack> newPlayer) {
-                getPlaylistManager().onMediaPlayerChanged(newPlayer);
-            }
+    AudioPlaylistHandler.Listener<AudioTrack> listener = new AudioPlaylistHandler.Listener<AudioTrack>() {
+      @Override
+      public void onMediaPlayerChanged(MediaPlayerApi<AudioTrack> oldPlayer, MediaPlayerApi<AudioTrack> newPlayer) {
+        getPlaylistManager().onMediaPlayerChanged(newPlayer);
+      }
 
-            @Override
-            public void onItemSkipped(AudioTrack item) {
-                // We don't need to do anything with this right now
-                // The PluginManager receives notifications of the current item changes.
-            }
-        };
+      @Override
+      public void onItemSkipped(AudioTrack item) {
+        // We don't need to do anything with this right now
+        // The PluginManager receives notifications of the current item changes.
+      }
+    };
 
-        return new AudioPlaylistHandler.Builder<>(
-                getApplicationContext(),
-                getClass(),
-                getPlaylistManager(),
-                imageProvider,
-                listener
-        ).build();
-    }
+    return new AudioPlaylistHandler.Builder<>(getApplicationContext(), getClass(), getPlaylistManager(), imageProvider,
+        listener).build();
+  }
 }
