@@ -307,6 +307,10 @@ function () {
       exec(successCallback, errorCallback, "RmxAudioPlayer", "changeContinousMode", [isContinous]);
     });
 
+    _defineProperty(this, "changeAudioSessionCategory", function (successCallback, errorCallback) {
+      exec(successCallback, errorCallback, "RmxAudioPlayer", "changeAudioSessionCategory", []);
+    });
+
     _defineProperty(this, "validateTracks", function (items) {
       if (!items || !Array.isArray(items)) {
         return [];

@@ -189,6 +189,7 @@ export declare class RmxAudioPlayer {
     * (iOS only): Change mode that play tracks continous.
     */
     changeContinousMode: (successCallback: SuccessCallback, errorCallback: ErrorCallback, isContinous: boolean) => void;
+    changeAudioSessionCategory: (successCallback: SuccessCallback, errorCallback: ErrorCallback) => void;
     /**
      * Status event handling
      */

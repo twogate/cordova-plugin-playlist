@@ -382,6 +382,10 @@ export class RmxAudioPlayer {
     exec(successCallback, errorCallback, "RmxAudioPlayer", "changeContinousMode", [isContinous]);
   }
 
+  changeAudioSessionCategory = (successCallback: SuccessCallback, errorCallback: ErrorCallback) => {
+    exec(successCallback, errorCallback, "RmxAudioPlayer", "changeAudioSessionCategory", []);
+  };
+
   /**
    * Status event handling
    */
