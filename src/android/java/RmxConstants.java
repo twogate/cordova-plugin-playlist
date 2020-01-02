@@ -41,4 +41,6 @@ public interface RmxConstants {
   String IS_ROUTED_TO_EARPHONE  = "isRoutedToEarphone";
 
   String RELEASE = "release";
+
+  String CHANGE_CONTINOUS_MODE = "changeContinousMode";
 }
