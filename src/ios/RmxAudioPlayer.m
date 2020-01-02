@@ -1409,7 +1409,7 @@ static char kPlayerItemTimeRangesContext;
         options |= AVAudioSessionCategoryOptionAllowBluetooth;
     }
 
-    [avSession setCategory:AVAudioSessionCategoryPlayAndRecord withOptions:options error:&categoryError];
+    [avSession setCategory:AVAudioSessionCategoryAmbient withOptions:options error:&categoryError];
     if (categoryError) {
         NSLog(@"Error setting category! %@", [categoryError description]);
     }
@@ -1424,6 +1424,20 @@ static char kPlayerItemTimeRangesContext;
             NSLog(@"audio session could not be activated!");
         }
     }
+}
+
+- (void) changeAudioSessionCategory:(CDVInvokedUrlCommand *) command {
+    NSLog(@"RmxAudioPlayer.execute=changeAudioSessionCategory, %@");
+
+    if ([AVAudioSession sharedInstance].otherAudioPlaying) {
+       [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback withOptions:AVAudioSessionCategoryOptionDuckOthers error:nil];
+    } else {
+      [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
+    }
+    [[AVAudioSession sharedInstance] setActive:YES error:nil];
+
+    CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
 }
 
 /**
