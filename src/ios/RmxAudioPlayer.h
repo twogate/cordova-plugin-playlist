@@ -24,6 +24,7 @@
 - (void)pluginInitialize;
 - (void)setOptions:(CDVInvokedUrlCommand *)command;
 - (void)initialize:(CDVInvokedUrlCommand *)command;
+- (void)changeAudioSessionCategory:(CDVInvokedUrlCommand *)command;
 
 // public API
 
