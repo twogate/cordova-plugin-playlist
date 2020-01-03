@@ -466,7 +466,6 @@ static char kPlayerItemTimeRangesContext;
 - (void) changeContinousMode:(CDVInvokedUrlCommand*)command {
     NSLog(@"RmxAudioPlayer.execute=changeContinousMode");
     NSNumber* argVal = [command argumentAtIndex:0];
-    printf(argVal.boolValue);
     self.isContinousPlay = argVal.boolValue;
 
     CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
@@ -1447,7 +1446,7 @@ static char kPlayerItemTimeRangesContext;
 }
 
 - (void) changeAudioSessionCategory:(CDVInvokedUrlCommand *) command {
-    NSLog(@"RmxAudioPlayer.execute=changeAudioSessionCategory, %@");
+    NSLog(@"RmxAudioPlayer.execute=changeAudioSessionCategory");
 
     if ([AVAudioSession sharedInstance].otherAudioPlaying) {
        [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback withOptions:AVAudioSessionCategoryOptionDuckOthers error:nil];
