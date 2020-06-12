@@ -1449,9 +1449,11 @@ static char kPlayerItemTimeRangesContext;
     NSLog(@"RmxAudioPlayer.execute=changeAudioSessionCategory");
 
     if ([AVAudioSession sharedInstance].otherAudioPlaying) {
-       [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayAndRecord withOptions:AVAudioSessionCategoryOptionDuckOthers error:nil];
+        [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayAndRecord
+                                         withOptions:AVAudioSessionCategoryOptionDuckOthers error:nil];
     } else {
-      [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayAndRecord error:nil];
+        [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayAndRecord
+                                         withOptions: AVAudioSessionCategoryOptionAllowBluetoothA2DP error:nil];
     }
     [[AVAudioSession sharedInstance] setActive:YES error:nil];
 
